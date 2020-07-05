@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  tournament:
+    image: srinikasarla/tournament
+    container_name: tournament
+    hostname: tournament
+    ports:
+      - "4202:4202"
+      - "4201:80"
+  tournament-api:
+    image: srinikasarla/tournament-api
+    container_name: tournament-api
+    hostname: tournament-api
+    ports:
+      - "9090:9090"
+    depends_on:
+      - dbpostgres
+    volumes:
+      - ./logs:/logs
+  dbpostgres:
+    image: postgres:10.7
+    container_name: dbpostgres
+    hostname: dbpostgres
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+          - 5432:5432
+    environment:
+        POSTGRES_USER: tournament_app_user
+        POSTGRES_PASSWORD: xZ9jtXE3CD9n
+        POSTGRES_DB: tournament_local
